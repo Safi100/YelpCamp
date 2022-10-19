@@ -1,0 +1,20 @@
+{
+  "name": "yelpcamp",
+  "version": "1.0.0",
+  "description": "yelp-camp is full stack project for the web developer bootcamp :)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Safi Nafi",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "mongoose": "^6.6.5",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
