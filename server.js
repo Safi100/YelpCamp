@@ -3,6 +3,7 @@ const path = require('path')
 const morgan = require('morgan')
 const methodOverRide = require('method-override')
 const mongoose = require('mongoose')
+const ejsMate = require('ejs-mate')
 const Campground = require('./models/campground')
 
 mongoose.connect('mongodb://localhost:27017/yelp-camp')
@@ -11,11 +12,13 @@ mongoose.connect('mongodb://localhost:27017/yelp-camp')
 
 const app = express()
 
+app.engine('ejs', ejsMate)
+app.set('view engine', 'ejs')
+app.set('views', path.join(__dirname, 'views'))
+
 app.use(morgan('dev'))
 app.use(express.urlencoded({extended: true}))
 app.use(methodOverRide('_method'))
-app.set('view engine', 'ejs')
-app.set('views', path.join(__dirname, 'views'))
 
 app.get('/', (req, res)=> {
     res.render("home")
