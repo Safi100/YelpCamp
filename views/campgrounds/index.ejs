@@ -3,8 +3,20 @@
 <div>
     <a href="/campgrounds/new">New Campground</a>
 </div>
-<ul>
-    <% campgrounds.forEach(campground => { %>
-    <li><a href="/campgrounds/<%= campground._id %>"><%= campground.title %></a></li>
-    <% }) %>
-</ul>
+<% campgrounds.forEach(campground => { %>
+    <div class="card mb-3">
+        <div class="row">
+            <div class="col-md-4">
+                <img src="<%= campground.image %>" alt="" class="img-fluid">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title"><%= campground.title %></h5>
+                    <p class="card-text"><%= campground.description %></p>
+                    <p class="card-text"><small class="text-muted"><%= campground.location %></small></p>
+                    <a class="btn btn-primary" href="/campgrounds/<%= campground._id %>">View <%= campground.title %></a>
+                </div>
+            </div>
+        </div>
+    </div>
+<% }) %>
