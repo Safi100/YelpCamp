@@ -4,6 +4,7 @@ const morgan = require('morgan')
 const methodOverRide = require('method-override')
 const mongoose = require('mongoose')
 const ejsMate = require('ejs-mate')
+const catchAsync = require('./utils/catchAsync')
 const Campground = require('./models/campground')
 
 mongoose.connect('mongodb://localhost:27017/yelp-camp')
@@ -23,30 +24,30 @@ app.use(methodOverRide('_method'))
 app.get('/', (req, res)=> {
     res.render("home")
 })
-app.get('/campgrounds', async (req, res)=> {
+app.get('/campgrounds', catchAsync(async (req, res)=> {
     const campgrounds = await Campground.find({})
     res.render("campgrounds/index", {campgrounds})
-})
+}))
 app.get('/campgrounds/new', (req, res) => {
     res.render('campgrounds/new')
 })
-app.get('/campgrounds/:id', async (req, res)=> {
+app.get('/campgrounds/:id', catchAsync(async (req, res)=> {
     const id = req.params.id
     const campground = await Campground.findById(id)
     res.render('campgrounds/show', {campground})
-})
-app.get('/campgrounds/:id/edit', async (req, res)=> {
+}))
+app.get('/campgrounds/:id/edit', catchAsync(async (req, res)=> {
     const id = req.params.id
     const campground = await Campground.findById(id)
     res.render('campgrounds/edit', {campground})
-})
-app.put('/campgrounds/:id', async (req, res)=> {
+}))
+app.put('/campgrounds/:id', catchAsync(async (req, res)=> {
     const id = req.params.id
     console.log(id);
     const campground = await Campground.findByIdAndUpdate(id, {...req.body.campground})
     res.redirect(`/campgrounds/${campground._id}`)
-})
-app.post('/campgrounds', async (req, res, next) => {
+}))
+app.post('/campgrounds', catchAsync(async (req, res, next) => {
     try{
         const campground = new Campground(req.body.campground)
         await campground.save()
@@ -54,13 +55,13 @@ app.post('/campgrounds', async (req, res, next) => {
     }catch(e){
         next(e)
     }
-})
-app.delete('/campgrounds/:id', async (req, res) => {
+}))
+app.delete('/campgrounds/:id', catchAsync(async (req, res) => {
     const id = req.params.id
     console.log(id);
     await Campground.findByIdAndDelete(id)
     res.redirect('/campgrounds')
-})
+}))
 app.use((err, req, res, next) => {
     res.send('Something went wrong!')
 })
