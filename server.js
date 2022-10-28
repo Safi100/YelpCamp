@@ -6,7 +6,7 @@ const mongoose = require('mongoose')
 const ejsMate = require('ejs-mate')
 const catchAsync = require('./utils/catchAsync')
 const ExpressError = require('./utils/ExpressError')
-const joi = require('joi')
+const {campgroundSchema} = require('./schemas.js')
 const Campground = require('./models/campground')
 
 mongoose.connect('mongodb://localhost:27017/yelp-camp')
@@ -24,15 +24,6 @@ app.use(express.urlencoded({extended: true}))
 app.use(methodOverRide('_method'))
 
 const validateCampground = (req, res, next) => {
-    const campgroundSchema = joi.object({
-        campground: joi.object({
-            title: joi.string().required(),
-            price: joi.number().required().min(0),
-            image: joi.string().required(),
-            location: joi.string().required(),
-            description: joi.string().required()
-        }).required()
-    })
     const { error } = campgroundSchema.validate(req.body)
     if(error) {
         const msg = error.details.map(el => el.message).join(',')
