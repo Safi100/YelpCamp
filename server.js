@@ -5,6 +5,8 @@ const methodOverRide = require('method-override')
 const mongoose = require('mongoose')
 const ejsMate = require('ejs-mate')
 const catchAsync = require('./utils/catchAsync')
+const ExpressError = require('./utils/ExpressError')
+const joi = require('joi')
 const Campground = require('./models/campground')
 
 mongoose.connect('mongodb://localhost:27017/yelp-camp')
@@ -48,22 +50,37 @@ app.put('/campgrounds/:id', catchAsync(async (req, res)=> {
     res.redirect(`/campgrounds/${campground._id}`)
 }))
 app.post('/campgrounds', catchAsync(async (req, res, next) => {
-    try{
-        const campground = new Campground(req.body.campground)
-        await campground.save()
-        res.redirect(`/campgrounds/${campground._id}`)
-    }catch(e){
-        next(e)
+    // if(!req.body.campground) throw new ExpressError('Invalid Campground Data', 400)
+    const campgroundSchema = joi.object({
+        campground: joi.object({
+            title: joi.string().required(),
+            price: joi.number().required().min(0),
+            image: joi.string().required(),
+            location: joi.string().required(),
+            description: joi.string().required()
+        }).required()
+    })
+    const { error } = campgroundSchema.validate(req.body)
+    if(error) {
+        const msg = error.details.map(el => el.message).join(',')
+        throw new ExpressError(msg, 400)
     }
+    const campground = new Campground(req.body.campground)
+    await campground.save()
+    res.redirect(`/campgrounds/${campground._id}`)
 }))
 app.delete('/campgrounds/:id', catchAsync(async (req, res) => {
     const id = req.params.id
-    console.log(id);
     await Campground.findByIdAndDelete(id)
     res.redirect('/campgrounds')
 }))
+app.all('*', (req, res, next)=>{
+    next(new ExpressError('Page Not Found', 404))
+})
 app.use((err, req, res, next) => {
-    res.send('Something went wrong!')
+    if(!err.message) err.message = 'Something went wrong!'
+    const {statusCode = 500 } = err
+    res.status(statusCode).render('error', { err })
 })
 app.listen(3000, ()=>{
     console.log('Serving on port 3000')
