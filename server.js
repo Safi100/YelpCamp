@@ -4,6 +4,7 @@ const morgan = require('morgan')
 const methodOverRide = require('method-override')
 const mongoose = require('mongoose')
 const ejsMate = require('ejs-mate')
+const session = require('express-session')
 const ExpressError = require('./utils/ExpressError')
 const campgrounds = require('./routes/campgrounds')
 const reviews = require('./routes/reviews')
@@ -23,6 +24,18 @@ app.use(express.urlencoded({extended: true}))
 app.use(methodOverRide('_method'))
 app.use(express.static(path.join(__dirname, 'public')))
 
+const sessionConfig = {
+    secret: 'thisShouldBeAbetterSecret',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true,
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+        maxAge: 1000 * 60 * 60 * 24 * 7
+    }
+
+}
+app.use(session(sessionConfig))
 
 app.use('/campgrounds', campgrounds)
 app.use('/campgrounds/:id/reviews', reviews)
