@@ -10,7 +10,11 @@ const ExpressError = require('./utils/ExpressError')
 const campgrounds = require('./routes/campgrounds')
 const reviews = require('./routes/reviews')
 
-mongoose.connect('mongodb://localhost:27017/yelp-camp')
+mongoose.connect('mongodb://localhost:27017/YelpCamp', {
+    useNewUrlParser: true, 
+    useUnifiedTopology: true,
+    family:4
+})
 .then(()=> console.log("db connected"))
 .catch((err)=> console.log(err))
 
