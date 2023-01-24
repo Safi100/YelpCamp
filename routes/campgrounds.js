@@ -52,7 +52,7 @@ Router.post('/', isLoggedIn, validateCampground, catchAsync(async (req, res, nex
     req.flash('success', 'Successfully made a new campground!')
     res.redirect(`/campgrounds/${campground._id}`)
 }))
-Router.delete('/:id', catchAsync(async (req, res) => {
+Router.delete('/:id', isLoggedIn, catchAsync(async (req, res) => {
     const id = req.params.id
     await Campground.findByIdAndDelete(id)
     req.flash('success', 'Successfully deleted campground!')
