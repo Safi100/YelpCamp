@@ -3,7 +3,7 @@ const Router = express.Router({ mergeParams: true })
 const catchAsync = require('../utils/catchAsync')
 const Campground = require('../models/campground')
 const Review = require('../models/review')
-
+const { validateReview } = require('../middleware')
 
 Router.post('/', validateReview, catchAsync(async (req, res) => {
     const id = req.params.id
