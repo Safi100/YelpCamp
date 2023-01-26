@@ -5,6 +5,10 @@ const Campground = require('../models/campground')
 const Review = require('../models/review')
 const { validateReview } = require('../middleware')
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 58ad8c95c1124ba563900a4939cbeee9d9d65719
 Router.post('/', validateReview, catchAsync(async (req, res) => {
     const id = req.params.id
     const campground = await Campground.findById(id)
