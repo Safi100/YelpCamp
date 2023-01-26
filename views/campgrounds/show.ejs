@@ -1,4 +1,5 @@
-<% layout('layouts/boilerplate') %> 
+<% layout('layouts/boilerplate') %>
+<link rel="stylesheet" href="/stylesheets/stars.css">
 <div class="row">
     <div class="col-6">
         <div class="card mb-3">
@@ -28,11 +29,26 @@
       <h2>Leave a Review</h2>
       <form class="mb-3 validated-form" action="/campgrounds/<%= campground._id %>/reviews" method="POST" novalidate>
         <div class="mb-3">
-          <label for="rating">Rating</label>
+          <!-- <label for="rating">Rating</label>
           <input class="form-range" name="review[rating]" type="range" min="1" max="5" id="rating">
-        </div>
+        </div> -->
         <div class="mb-3">
-          <label class="form-label" for="body">Review</label>
+          <fieldset class="starability-basic">
+            <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" checked value="0" aria-label="No rating." />
+            <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+            <label for="first-rate1" title="Terrible">1 star</label>
+            <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+            <label for="first-rate2" title="Not good">2 stars</label>
+            <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+            <label for="first-rate3" title="Average">3 stars</label>
+            <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+            <label for="first-rate4" title="Very good">4 stars</label>
+            <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+            <label for="first-rate5" title="Amazing">5 stars</label>
+          </fieldset>
+        </div>     
+        <div class="mb-3">
+          <label class="form-label" for="body">Review Text</label>
           <textarea class="form-control" name="review[body]" id="body" cols="30" rows="3" required></textarea>
           <div class="valid-feedback">Looks good!</div>
           <div class="invalid-feedback">Please type a review text.</div>
@@ -43,8 +59,8 @@
       <% for(let review of campground.reviews) { %>
         <div class="card mb-3 ">
             <div class="card-body">
-                <h5 class="card-title">Rating: <%= review.rating %></h5>
-                <h6 class="card-subtitle mb-2 text-muted">By <%= review.author.username %></h6>
+                <h5 class="card-title"><%= review.author.username %></h5>
+                <p class="starability-result" data-rating="<%= review.rating %>">Rated: <%= review.rating %> starts</p>
                 <p class="card-text">Review: <%= review.body %></p>
                 <% if(currentUser && review.author.equals(currentUser._id)) {%> 
                 <form action="/campgrounds/<%=campground._id%>/reviews/<%=review._id%>?_method=DELETE" method="POST">
