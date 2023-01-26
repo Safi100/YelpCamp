@@ -33,8 +33,7 @@ module.exports.logout = (req, res, next) => {
             res.redirect('/campgrounds')
         })
     }else{
-        req.flash('error', 'Your are not logged in!')
-        const redirectUrl = res.locals.returnTo || '/campgrounds'
-        res.redirect(redirectUrl)
+        req.flash('error', 'You must be logged in before logout!')
+        res.redirect('/login')
     }
 }
