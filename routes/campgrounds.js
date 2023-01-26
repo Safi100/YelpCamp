@@ -1,9 +1,7 @@
 const express = require('express')
 const Router = express.Router({ mergeParams: true })
 const catchAsync = require('../utils/catchAsync')
-const ExpressError = require('../utils/ExpressError')
 const Campground = require('../models/campground')
-const {campgroundSchema} = require('../schemas.js')
 const {isLoggedIn, isAuthor, validateCampground} = require('../middleware')
 
 Router.get('/', catchAsync(async (req, res)=> {
