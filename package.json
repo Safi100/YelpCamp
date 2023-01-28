@@ -9,6 +9,7 @@
   "author": "Safi Nafi",
   "license": "ISC",
   "dependencies": {
+    "@mapbox/mapbox-sdk": "^0.14.0",
     "cloudinary": "^1.33.0",
     "connect-flash": "^0.1.1",
     "dotenv": "^16.0.3",
