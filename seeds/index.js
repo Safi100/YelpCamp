@@ -16,7 +16,7 @@ const sample = (array) => array[Math.floor(Math.random() * array.length)]
 
 const seedDB = async () => {
     await Campground.deleteMany({})
-    for(let i=0; i<50; i++){
+    for(let i=0; i<20; i++){
         const random1000 = Math.floor(Math.random() * 1000)
         const price = Math.floor(Math.random() * 20) + 10
         const camp = new Campground({
@@ -35,8 +35,8 @@ const seedDB = async () => {
               },
             images: [
                 {
-                  url: 'https://res.cloudinary.com/dfscdodag/image/upload/v1674853086/YelpCamp/hltfndc3fqgp02iy1yk1.jpg',
-                  filename: 'YelpCamp/hltfndc3fqgp02iy1yk1',
+                  url: 'https://res.cloudinary.com/dfscdodag/image/upload/v1675028417/YelpCamp/mfbcmbyqsdcou0xllexe.jpg',
+                  filename: 'YelpCamp/mfbcmbyqsdcou0xllexe',
                 }
               ]
         })
