@@ -12,6 +12,7 @@
         </div>
         <div class="navbar-nav ms-auto">
           <% if(currentUser) {%>
+            <span class="d-flex text-white align-items-center gap-2 gap-lg-0">Logged in As<a class="nav-link text-warning" href="/user/<%= currentUser._id %>"><%= currentUser.username %></a></span>
             <a class="nav-link" href="/logout">Logout</a>
           <% }else{ %>
             <a class="nav-link" href="/login">Login</a>
