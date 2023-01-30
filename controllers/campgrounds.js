@@ -46,7 +46,7 @@ module.exports.updateCampground = async (req, res)=> {
         query: req.body.campground.location,
         limit: 1
     }).send()
-    campground.geometry = geoData.body.features[0].geometry
+    campground.geometry.coordinates = geoData.body.features[0].geometry.coordinates
     const imgs = req.files.map(file => ({url: file.path, filename: file.filename}))
     campground.images.push(...imgs)
     if(req.body.deleteImages){
