@@ -44,7 +44,7 @@
           </div>
     </div>
     <div class="col-6">
-      <div id="map" style="width: 400px; height: 300px;"></div>
+      <div id="map" class="mb-3"></div>
       <% if(currentUser) {%> 
       <h2>Leave a Review</h2>
       <form class="mb-3 validated-form" action="/campgrounds/<%= campground._id %>/reviews" method="POST" novalidate>
@@ -73,11 +73,11 @@
           <div class="valid-feedback">Looks good!</div>
           <div class="invalid-feedback">Please type a review text.</div>
         </div>
-        <button class="btn btn-success" type="submit">Add Review</button>
+        <button class="btn btn-success mb-3" type="submit">Add Review</button>
       </form>
       <% } %> 
       <% for(let review of campground.reviews) { %>
-        <div class="card mb-3 ">
+        <div class="card mb-3">
             <div class="card-body">
                 <h5 class="card-title"><%= review.author.username %></h5>
                 <p class="starability-result" data-rating="<%= review.rating %>">Rated: <%= review.rating %> starts</p>
