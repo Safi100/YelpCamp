@@ -29,18 +29,15 @@
             </div>
             <ul class="list-group list-group-flush">
               <li class="list-group-item text-muted"><%= campground.location %> </li>
-              <li class="list-group-item">Submitted by <%= campground.author.username %> </li>
               <li class="list-group-item">$<%= campground.price %>/night</li>
+              <li class="list-group-item">Submitted by <a href="/user/<%= campground.author._id %>"><%= campground.author.username %></a> on <%= campground.createdAt.toLocaleDateString('en-US',{year: 'numeric', month: 'long', day: 'numeric'}) %></li>
             </ul>
             <% if(currentUser && campground.author.equals(currentUser._id)) {%> 
             <div class="card-body">
               <a class="card-link btn btn-info text-white" href="/campgrounds/<%= campground._id %>/edit">Edit</a>
               <form class="d-inline" action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST"><button class="btn btn-danger">DELETE</button></form>
             </div>
-            <% } %> 
-            <div class="card-footer text-muted">
-                2 days ago
-            </div>
+            <% } %>
           </div>
     </div>
     <div class="col-12 col-md-6">
@@ -66,7 +63,7 @@
             <input type="radio" id="first-rate5" name="review[rating]" value="5" />
             <label for="first-rate5" title="Amazing">5 stars</label>
           </fieldset>
-        </div>     
+        </div>
         <div class="mb-3">
           <label class="form-label" for="body">Review Text</label>
           <textarea class="form-control" name="review[body]" id="body" cols="30" rows="3" required></textarea>
