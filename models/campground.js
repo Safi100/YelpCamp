@@ -26,6 +26,10 @@ const CampgroundSchema = new Schema({
             required: true
         }
     },
+    createdAt:{
+        type: Date,
+        default: Date.now
+    },
     price: Number,
     description: String,
     location: String,
