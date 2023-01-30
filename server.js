@@ -62,7 +62,7 @@ passport.serializeUser(User.serializeUser())
 passport.deserializeUser(User.deserializeUser())
 
 app.use((req, res, next) => {
-    if(!['/login','/register','/logout','/'].includes(req.originalUrl)){
+    if(!['/login','/register','/logout','/','/favicon.ico'].includes(req.originalUrl)){
         req.session.returnTo = req.originalUrl
     }
     res.locals.currentUser = req.user
