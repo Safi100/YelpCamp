@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="/stylesheets/stars.css">
 
 <div class="row">
-    <div class="col-6">
+    <div class="col-12 col-md-6">
       <div id="CampgroundCarousel" class="carousel slide">
         <div class="carousel-inner">
           <% campground.images.forEach((img, index) => {%> 
@@ -43,7 +43,7 @@
             </div>
           </div>
     </div>
-    <div class="col-6">
+    <div class="col-12 col-md-6">
       <div id="map" class="mb-3"></div>
       <% if(currentUser) {%> 
       <h2>Leave a Review</h2>
@@ -54,8 +54,8 @@
         </div> -->
         <div class="mb-3">
           <fieldset class="starability-basic">
-            <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" checked value="0" aria-label="No rating." />
-            <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+            <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="0" aria-label="No rating." />
+            <input type="radio" id="first-rate1" name="review[rating]" checked value="1" />
             <label for="first-rate1" title="Terrible">1 star</label>
             <input type="radio" id="first-rate2" name="review[rating]" value="2" />
             <label for="first-rate2" title="Not good">2 stars</label>
