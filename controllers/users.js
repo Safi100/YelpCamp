@@ -53,6 +53,7 @@ module.exports.logout = (req, res, next) => {
 module.exports.deleteAccount = async (req, res) => {
     const id = req.params.id
     const user = await User.findByIdAndDelete(id)
+    await Campground.deleteMany({author: {$in: id}})
     req.flash('success', 'Successfully deleted account!')
     res.redirect('/campgrounds')
 }
