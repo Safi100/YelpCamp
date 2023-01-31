@@ -1,5 +1,7 @@
 const Campground = require("./models/campground")
 const Review = require("./models/review")
+const User = require("./models/user")
+
 const { campgroundSchema, reviewSchema } = require("./schemas")
 const ExpressError = require("./utils/ExpressError")
 
@@ -52,6 +54,20 @@ module.exports.isAuthor = async (req, res, next) => {
     }
     next()
 }
+module.exports.isAccountOwner = async(req, res, next) => {
+    const id = req.params.id
+    const user = await User.findById(id)
+    if(!user){
+        req.flash('error', 'Cannot find that user!')
+        return res.redirect('/campgrounds')
+    }
+    if(!user._id.equals(req.user._id)){
+        req.flash('error', "You don't have permission to do that!")
+        return res.redirect(`/campgrounds`)
+    }
+    next()
+}
+
 module.exports.isReviewAuthor = async (req, res, next) => {
     const {id, reviewId} = req.params
     const review = await Review.findById(reviewId)
