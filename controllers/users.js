@@ -1,4 +1,6 @@
 const User = require('../models/user')
+const Campground = require('../models/campground')
+const Review = require('../models/review')
 
 module.exports.renderRegister = (req, res) => {
     res.render('users/register')
@@ -25,6 +27,17 @@ module.exports.login = (req, res) => {
     const redirectUrl = res.locals.returnTo || '/campgrounds'
     res.redirect(redirectUrl)
 }
+module.exports.renderProfile = async (req, res) => {
+    const id = req.params.id
+    const user = await User.findById(id)
+    if(!user){
+        req.flash('error', 'Cannot find that user!')
+        return res.redirect('/campgrounds')
+    }
+    const campgrounds = await Campground.find({author: {$in: id}})
+    const reviews = await Review.find({author: {$in: id}})
+    res.render('users/profile', {user, campgrounds, reviews})
+}
 module.exports.logout = (req, res, next) => {
     if(req.user){
         req.logout(req.user, err => {
@@ -36,4 +49,10 @@ module.exports.logout = (req, res, next) => {
         req.flash('error', 'You must be logged in before logout!')
         res.redirect('/login')
     }
+}
+module.exports.deleteAccount = async (req, res) => {
+    const id = req.params.id
+    const user = await User.findByIdAndDelete(id)
+    req.flash('success', 'Successfully deleted account!')
+    res.redirect('/campgrounds')
 }
