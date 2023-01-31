@@ -1,0 +1,37 @@
+<% layout('layouts/boilerplate')%>
+<link rel="stylesheet" href="/stylesheets/profile.css">
+<div class="card profile_info bg-dark text-white mb-4">
+    <div class="card-body">
+        <h3 class="card-title"><%= user.username %></h3>
+        <p>Contact email: <%= user.email %></p>
+        <% if(currentUser && user.equals(currentUser._id)) {%> 
+            <form action="/user/<%= user._id %>?_method=DELETE" method="POST">
+                <button class="btn btn-sm btn-danger">Delete Account</button>
+            </form>
+        <% } %> 
+    </div>
+</div>
+<% if(!campgrounds.length > 0 ) {%>
+    <h3>No campgrounds</h3>
+<% }else{ %>
+    <h3 class="mb-4">Campgrounds</h3>
+    <div class="row gap-3 gap-5 m-0 mb-5">
+        <% campgrounds.forEach(camp => { %>
+            <div class="card p-0" style="width: 18rem;">
+                <img src="<%= camp.images[0].url %>" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title"><%= camp.title %> </h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item"><%= camp.location %></li>
+                  <li class="list-group-item">$<%= camp.price %>/night</li>
+                  <li class="list-group-item"><%= (camp.reviews.length > 0) ? 'Number of reviews: '+ camp.reviews.length : 'No reviews' %></li>
+                </ul>
+                <div class="card-body">
+                  <a href="/campgrounds/<%= camp._id %>" class="card-link">Go to camp</a>
+                  <a href="#" class="card-link">Another link</a>
+                </div>
+              </div>
+        <% }) %> 
+    </div>
+<% } %>
