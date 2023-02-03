@@ -53,8 +53,18 @@ module.exports.logout = (req, res, next) => {
 module.exports.deleteAccount = async (req, res) => {
     const id = req.params.id
     const user = await User.findByIdAndDelete(id)
-    await Campground.deleteMany({author: {$in: id}})
-    await Review.deleteMany({author: {$in: id}})
+    const reviews = await Review.find({author: {$in: user._id}})
+    reviews.forEach(async (review) => {
+        await Campground.updateOne({$pull: {reviews: { $in: review._id} } } )
+        await Review.deleteOne({_id: review._id})
+    })
+    const campgrounds = await Campground.find({author: {$in: user._id}})
+    campgrounds.forEach(async (camp) => {
+        console.log(camp.reviews)
+        await Review.deleteMany({_id: { $in: camp.reviews }})
+    })
+    await Campground.deleteMany({author: {$in: user._id}})
+
     req.flash('success', 'Successfully deleted account!')
     res.redirect('/campgrounds')
 }

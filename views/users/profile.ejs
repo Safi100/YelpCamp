@@ -1,5 +1,4 @@
 <% layout('layouts/boilerplate')%>
-<link rel="stylesheet" href="/stylesheets/profile.css">
 <div class="card profile_info bg-dark text-white mb-4">
     <div class="card-body">
         <h3 class="card-title"><%= user.username %></h3>
@@ -29,7 +28,6 @@
                 </ul>
                 <div class="card-body">
                   <a href="/campgrounds/<%= camp._id %>" class="card-link">Go to camp</a>
-                  <a href="#" class="card-link">Another link</a>
                 </div>
               </div>
         <% }) %> 
