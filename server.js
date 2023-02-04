@@ -38,7 +38,11 @@ app.use(morgan('dev'))
 app.use(express.urlencoded({extended: true}))
 app.use(methodOverRide('_method'))
 app.use(express.static(path.join(__dirname, 'public')))
-app.use(mongoSanitize())
+app.use(
+    mongoSanitize({
+      replaceWith: '_',
+    }),
+  );
 
 const sessionConfig = {
     secret: 'thisShouldBeAbetterSecret',
