@@ -1,4 +1,4 @@
-const joi = require('joi')
+const BaseJoi = require('joi')
 const sanitizeHtml = require('sanitize-html');
 
 const extension = (joi) => ({
@@ -33,9 +33,9 @@ module.exports.campgroundSchema = Joi.object({
     deleteImages: Joi.array()
 })
 
-module.exports.reviewSchema = joi.object({
-    review: joi.object({
-        rating: joi.number().required().min(1).max(5),
-        body: joi.string().required().escapeHTML()
+module.exports.reviewSchema = Joi.object({
+    review: Joi.object({
+        rating: Joi.number().required().min(1).max(5),
+        body: Joi.string().required().escapeHTML()
     }).required()
 })
