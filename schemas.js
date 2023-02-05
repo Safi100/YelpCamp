@@ -21,19 +21,21 @@ const extension = (joi) => ({
     }
 })
 
-module.exports.campgroundSchema = joi.object({
-    campground: joi.object({
-        title: joi.string().required(),
-        price: joi.number().required().min(0),
-        location: joi.string().required(),
-        description: joi.string().required()
+const Joi = BaseJoi.extend(extension)
+
+module.exports.campgroundSchema = Joi.object({
+    campground: Joi.object({
+        title: Joi.string().required().escapeHTML(),
+        price: Joi.number().required().min(0),
+        location: Joi.string().required().escapeHTML(),
+        description: Joi.string().required().escapeHTML()
     }).required(),
-    deleteImages: joi.array()
+    deleteImages: Joi.array()
 })
 
 module.exports.reviewSchema = joi.object({
     review: joi.object({
         rating: joi.number().required().min(1).max(5),
-        body: joi.string().required()
+        body: joi.string().required().escapeHTML()
     }).required()
 })
