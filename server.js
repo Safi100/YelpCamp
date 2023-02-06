@@ -12,6 +12,7 @@ const flash = require('connect-flash')
 const ExpressError = require('./utils/ExpressError')
 const passport = require('passport')
 const localStrategy = require('passport-local')
+const helmet = require('helmet')
 const User = require('./models/user')
 const mongoSanitize = require('express-mongo-sanitize')
 
@@ -61,7 +62,7 @@ const sessionConfig = {
 
 app.use(session(sessionConfig))
 app.use(flash())
-
+app.use(helmet())
 app.use(passport.initialize())
 app.use(passport.session())
 passport.use(new localStrategy(User.authenticate()))
