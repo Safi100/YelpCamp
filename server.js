@@ -21,8 +21,8 @@ const reviewRoutes = require('./routes/reviews')
 const MongoDBStore = require('connect-mongo')
 
 mongoose.set('strictQuery', false)
-const DB_URL = process.env.DB_URL
-mongoose.connect(DB_URL , {
+const DB_URL = process.env.DB_URL || 'mongodb://localhost:27017/YelpCamp'
+mongoose.connect( 'mongodb://localhost:27017/YelpCamp' , {
     useNewUrlParser: true,  
     useUnifiedTopology: true,
     family:4
@@ -151,6 +151,9 @@ app.use((err, req, res, next) => {
     const {statusCode = 500 } = err
     res.status(statusCode).render('error', { err })
 })
-app.listen(3000, ()=>{
+
+const Port = process.env.PORT || 3000;
+
+app.listen(Port, ()=>{
     console.log('Serving on port 3000')
 })
