@@ -15,13 +15,14 @@ const localStrategy = require('passport-local')
 const helmet = require('helmet')
 const User = require('./models/user')
 const mongoSanitize = require('express-mongo-sanitize')
-
 const userRoutes = require('./routes/user')
 const campgroundRoutes = require('./routes/campgrounds')
 const reviewRoutes = require('./routes/reviews')
+const MongoDBStore = require('connect-mongo')
 
 mongoose.set('strictQuery', false)
-mongoose.connect('mongodb://localhost:27017/YelpCamp', {
+const DB_URL = process.env.DB_URL
+mongoose.connect(DB_URL , {
     useNewUrlParser: true,  
     useUnifiedTopology: true,
     family:4
@@ -43,13 +44,18 @@ app.use(
     mongoSanitize({
       replaceWith: '_',
     }),
-  );
+  )
 
 const sessionConfig = {
+    store: MongoDBStore.create({
+        mongoUrl: DB_URL,
+        secret: 'thisShouldBeAbetterSecret',
+        touchAfter: 24 * 60 * 60
+    }),
     name: 'session',
     secret: 'thisShouldBeAbetterSecret',
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: {
         httpOnly: true,
         // secure: true,
@@ -62,7 +68,52 @@ const sessionConfig = {
 
 app.use(session(sessionConfig))
 app.use(flash())
-app.use(helmet())
+// app.use(helmet())
+
+const scriptSrcUrls = [
+    "https://stackpath.bootstrapcdn.com",
+    "https://api.tiles.mapbox.com",
+    "https://api.mapbox.com",
+    "https://kit.fontawesome.com",
+    "https://cdnjs.cloudflare.com",
+    "https://cdn.jsdelivr.net",
+]
+const styleSrcUrls = [
+    "https://kit-free.fontawesome.com",
+    "https://stackpath.bootstrapcdn.com",
+    "https://api.mapbox.com",
+    "https://api.tiles.mapbox.com",
+    "https://fonts.googleapis.com",
+    "https://use.fontawesome.com",
+]
+const connectSrcUrls = [
+    "https://api.mapbox.com",
+    "https://*.tiles.mapbox.com",
+    "https://events.mapbox.com",
+]
+const fontSrcUrls = []
+// app.use(
+//     helmet.contentSecurityPolicy({
+//         directives: {
+//             defaultSrc: [],
+//             connectSrc: ["'self'", ...connectSrcUrls],
+//             scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
+//             styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+//             workerSrc: ["'self'", "blob:"],
+//             childSrc: ["blob:"],
+//             objectSrc: [],
+//             imgSrc: [
+//                 "'self'",
+//                 "blob:",
+//                 "data:",
+//                 "https://res.cloudinary.com/dfscdodag/", //SHOULD MATCH YOUR CLOUDINARY ACCOUNT! 
+//                 "https://images.unsplash.com",
+//             ],
+//             fontSrc: ["'self'", ...fontSrcUrls],
+//         },
+//     })
+// )
+
 app.use(passport.initialize())
 app.use(passport.session())
 passport.use(new localStrategy(User.authenticate()))
