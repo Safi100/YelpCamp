@@ -22,7 +22,7 @@ const MongoDBStore = require('connect-mongo')
 
 mongoose.set('strictQuery', false)
 const DB_URL = process.env.DB_URL || 'mongodb://localhost:27017/YelpCamp'
-mongoose.connect( 'mongodb://localhost:27017/YelpCamp' , {
+mongoose.connect(DB_URL , {
     useNewUrlParser: true,  
     useUnifiedTopology: true,
     family:4
@@ -149,6 +149,8 @@ app.all('*', (req, res, next)=>{
 app.use((err, req, res, next) => {
     if(!err.message) err.message = 'Something went wrong!'
     const {statusCode = 500 } = err
+    console.log(err);
+    
     res.status(statusCode).render('error', { err })
 })
 
